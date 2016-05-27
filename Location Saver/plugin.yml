@@ -1,0 +1,8 @@
+main: com.turt.locsaver.Main
+version: 1.0.3
+name: LocSaver
+commands:
+  saveloc:
+    description: Save current location
+  teleloc:
+    description: Teleport to Saved location
