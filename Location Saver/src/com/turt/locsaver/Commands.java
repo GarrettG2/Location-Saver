@@ -3,6 +3,7 @@ package com.turt.locsaver;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,15 +32,23 @@ public class Commands implements CommandExecutor, Listener {
 		double cz = pl.getConfig().getDouble("Players." + uuid + ".Last-Location.Z");
 		Location lastloc = new Location(Bukkit.getServer().getWorld(p.getWorld().getName()), cx, cy, cz);
 
-		/*
-		 * 
-		 * Save Location (Command)
-		 * 
-		 */
-		if (cmd.getName().equalsIgnoreCase("saveloc")) {
-			if (p.hasPermission("locsaver.commands.*") || p.hasPermission("locsave.commands.save") || p.isOp()) {
+		if (p.hasPermission("locsaver.commands.*") || p.hasPermission("locsaver.commands.loc") || p.isOp()) {
+			if (args.length == 0) {
+				p.sendMessage(cc(prefix + "&euse [/locsaver, loc, ls] [save/tele]"));
+				p.sendMessage(cc(prefix + "&eLocation-Saver, by ComputerTurtle"));
+			} else if (args.length == 1) {
+				if (args[0].equalsIgnoreCase("tele")) {
+					p.sendMessage(cc(prefix + "&eyou've been teleported to your last saved location!"));
+					if (pl.getConfig().contains("Players." + uuid)) {
+						p.teleport(lastloc);
+						p.playSound(p.getLocation(), Sound.ORB_PICKUP, 2, 2);
+					} else {
+						p.sendMessage(nosaved);
+					}
+				}
+				if (args[0].equalsIgnoreCase("save")) {
 					p.sendMessage(cc(prefix + "&eyour location has been saved!"));
-					p.sendMessage(cc(prefix + locx + " (&c&lX&f), " +locy + " (&c&lY&f), " + locz + " (&c&lZ&f)"));
+					p.sendMessage(cc(prefix + locx + " (&c&lX&f), " + locy + " (&c&lY&f), " + locz + " (&c&lZ&f)"));
 
 					if (pl.getConfig().contains("Players." + uuid)) {
 						pl.getConfig().set("Players." + uuid + ".Last-Location.X", locx);
@@ -52,27 +61,11 @@ public class Commands implements CommandExecutor, Listener {
 						pl.getConfig().set("Players." + uuid + ".Last-Location.Y", locy);
 						pl.getConfig().set("Players." + uuid + ".Last-Location.Z", locz);
 						pl.saveConfig();
-				}
-			} else {
-				p.sendMessage(noperm);
-			}
-		}
-		/*
-		 * 
-		 * Tele Location (Command)
-		 * 
-		 */
-		if (cmd.getName().equalsIgnoreCase("teleloc")) {
-			if (p.hasPermission("locsaver.commands.*") || p.hasPermission("locsave.commands.tele") || p.isOp()) {
-					p.sendMessage(cc(prefix + "&eyou've been teleported to your last saved location!"));
-					if (pl.getConfig().contains("Players." + uuid)) {
-						p.teleport(lastloc); 
-					} else {
-						p.sendMessage(nosaved);
 					}
-			} else {
-				p.sendMessage(noperm);
+				}
 			}
+		} else {
+			p.sendMessage(noperm);
 		}
 		return false;
 	}
