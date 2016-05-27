@@ -1,2 +1,1 @@
-# Location-Saver
-Location Saver Code
+#Code Owned and Written by: ComputerTurtle
