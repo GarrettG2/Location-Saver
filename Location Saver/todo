@@ -1,0 +1,13 @@
+FIX/ADD:
+ - FIX: Checking for if players are NULL when doing /ls check <name> //
+ - ADD: Check command /ls check? so players can check saved locations // X
+ - 
+ -
+ -
+
+DONE THIS SESSION:
+ - Allowing players to search up players when doing /ls check <name>
+ -
+ -
+ -
+ -
